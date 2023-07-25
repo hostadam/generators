@@ -25,7 +25,7 @@ public enum GeneratorType {
                     return null;
                 }
 
-                return new ItemGenerator(location, itemStack);
+                return new ItemGenerator(location, itemStack.clone());
             case ENTITY:
                 itemStack = player.getInventory().getItemInMainHand();
                 if(itemStack.getType() == Material.AIR) {
@@ -40,7 +40,7 @@ public enum GeneratorType {
                     return null;
                 }
 
-                return new BlockGenerator(location, itemStack);
+                return new BlockGenerator(location, itemStack.clone());
             default:
                 return null;
         }
