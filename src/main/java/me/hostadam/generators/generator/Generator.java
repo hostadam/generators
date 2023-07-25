@@ -29,6 +29,13 @@ public abstract class Generator<T> implements ConfigurationSerializable {
         this.type = type;
         this.location = location;
         this.toGenerate = toGenerate;
+        this.generations = 0;
+        this.minDelay = 0;
+        this.maxDelay = 0;
+        this.interval = 0;
+        this.lastGeneration = 0;
+        this.nextGeneration = 0;
+        this.duration = 0;
         this.creationDate = System.currentTimeMillis();
     }
 
@@ -47,7 +54,7 @@ public abstract class Generator<T> implements ConfigurationSerializable {
 
     public boolean tickValues() {
         this.generations++;
-        if(this.generations > this.maxGenerations || System.currentTimeMillis() - this.creationDate >= this.duration) {
+        if(this.maxGenerations != 0 && (this.generations > this.maxGenerations) || (this.duration != 0 && System.currentTimeMillis() - this.creationDate >= this.duration)) {
             return true;
         }
 

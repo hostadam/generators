@@ -28,7 +28,7 @@ public class GeneratorCommand extends Command {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args) {
-        if(args.length < 2) {
+        if(args.length < 1) {
             sender.sendMessage("§cUsage: /generator <add|edit>");
             return true;
         }
@@ -40,9 +40,14 @@ public class GeneratorCommand extends Command {
 
         Player player = (Player) sender;
 
-        switch(args[0].toUpperCase()) {
+        switch(args[0].toLowerCase()) {
             case "add":
             case "create":
+                if(args.length < 3) {
+                    sender.sendMessage("§cUsage: /generator add <BLOCK|ITEM|ENTITY> <params>");
+                    return true;
+                }
+
                 GeneratorType type;
                 try {
                     type = GeneratorType.valueOf(args[1].toUpperCase());
@@ -61,6 +66,11 @@ public class GeneratorCommand extends Command {
                 player.sendMessage("§aYou have created a generator with ID §l" + generator.getId() + "§a.");
                 return true;
             case "edit":
+                if(args.length < 2) {
+                    player.sendMessage("§cUsage: /generator edit <id>");
+                    return true;
+                }
+
                 Optional<Generator> optional = this.plugin.getHandler().getById(args[1]);
                 if(optional.isEmpty()) {
                     player.sendMessage("§cA generator with that ID was not found.");
@@ -72,7 +82,7 @@ public class GeneratorCommand extends Command {
                 new GeneratorEditGUI(player, generator).openForPlayer();
                 return true;
             default:
-                sender.sendMessage("§cUsage: /generator <add|edit> [name]");
+                sender.sendMessage("§cUsage: /generator <add|edit>");
                 return true;
         }
     }

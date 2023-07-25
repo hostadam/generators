@@ -19,17 +19,11 @@ public class BlockGenerator extends Generator<Material> {
         this.toGenerate = Material.valueOf(section.getString("toGenerate"));
     }
 
-
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = super.serialize();
         map.put("toGenerate", this.toGenerate.name());
         return map;
-    }
-
-    @Override
-    public void load(ConfigurationSection section) {
-        this.toGenerate = Material.valueOf(section.getString("toGenerate"));
     }
 
     @Override

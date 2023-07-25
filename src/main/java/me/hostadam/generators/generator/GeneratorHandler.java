@@ -30,18 +30,15 @@ public class GeneratorHandler {
             if(section == null || !section.contains("type")) continue;
             String type = section.getString("type");
             switch (type) {
-                case "BLOCK" -> {
+                case "BLOCK":
                     BlockGenerator generator = new BlockGenerator(section);
-                    this.generators.add(generator);
-                }
-                case "ENTITY" -> {
+                    this.addGenerator(generator);
+                case "ENTITY":
                     EntityGenerator entityGenerator = new EntityGenerator(section);
-                    this.generators.add(entityGenerator);
-                }
-                case "ITEM" -> {
+                    this.addGenerator(entityGenerator);
+                case "ITEM":
                     ItemGenerator itemGenerator = new ItemGenerator(section);
-                    this.generators.add(itemGenerator);
-                }
+                    this.addGenerator(itemGenerator);
             }
         }
 
