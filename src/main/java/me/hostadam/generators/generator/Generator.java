@@ -1,11 +1,14 @@
 package me.hostadam.generators.generator;
 
+import lombok.Getter;
 import org.bukkit.Location;
 
+@Getter
 public abstract class Generator<T> {
 
     protected Location location;
     protected T toGenerate;
+
 
     private int generations, maxGenerations;
     private long interval, nextGeneration;
