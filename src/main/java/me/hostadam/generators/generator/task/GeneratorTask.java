@@ -24,6 +24,7 @@ public class GeneratorTask extends BukkitRunnable {
                 generator.generate();
 
                 if(generator.tickValues()) {
+                    this.handler.remove(generator);
                     iterator.remove();
                 }
             }

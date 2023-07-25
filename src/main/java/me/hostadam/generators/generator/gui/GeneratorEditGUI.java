@@ -198,6 +198,7 @@ public class GeneratorEditGUI extends GeneratorGUI {
                 this.inventory.setItem(15, new ItemBuilder(Material.OBSIDIAN).withName("§6§lPause").withLore("§7Do you want to pause the generator?", "§fClick here §7to toggle.", " ", "§8→ §eCurrent§7: " + (this.generator.isPaused() ? "§aPaused" : "§cActive")).build());
                 break;
             case 16:
+                this.plugin.getHandler().remove(generator);
                 plugin.getHandler().getGenerators().remove(this.generator);
                 player.sendMessage("§cRemoved a generator.");
                 player.closeInventory();

@@ -45,6 +45,14 @@ public class GeneratorHandler {
         this.task = new GeneratorTask(this, 20);
     }
 
+    public void remove(Generator generator) {
+        if(this.plugin.getConfig().contains("generators." + generator.getId())) {
+            this.plugin.getConfig().set("generators." + generator.getId(), null);
+        }
+
+        this.plugin.saveConfig();
+    }
+
     public Optional<Generator> getByLocation(Location location) {
         return this.generators.stream().filter(generator -> location.equals(generator.getLocation())).findAny();
     }
