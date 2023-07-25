@@ -7,6 +7,7 @@ import me.hostadam.generators.generator.impl.ItemGenerator;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 @AllArgsConstructor
@@ -16,15 +17,30 @@ public enum GeneratorType {
     BLOCK,
     ENTITY;
 
-    public Generator<?> newInstance(Location location, String[] args) {
+    public Generator<?> newInstance(Player player, Location location) {
         switch(this) {
             case ITEM:
-                ItemStack itemStack = new ItemStack(Material.valueOf(args[0]));
+                ItemStack itemStack = player.getInventory().getItemInMainHand();
+                if(itemStack.getType() == Material.AIR) {
+                    return null;
+                }
+
                 return new ItemGenerator(location, itemStack);
             case ENTITY:
-                return new EntityGenerator(location, EntityType.valueOf(args[0]));
+                itemStack = player.getInventory().getItemInMainHand();
+                if(itemStack.getType() == Material.AIR) {
+                    return null;
+                }
+
+                EntityType type = EntityType.valueOf(itemStack.getType().name().replace("_SPAWN_EGG", ""));
+                return new EntityGenerator(location, type);
             case BLOCK:
-                return new BlockGenerator(location, Material.valueOf(args[0]));
+                itemStack = player.getInventory().getItemInMainHand();
+                if(itemStack.getType() == Material.AIR) {
+                    return null;
+                }
+
+                return new BlockGenerator(location, itemStack);
             default:
                 return null;
         }

@@ -43,8 +43,8 @@ public class GeneratorCommand extends Command {
         switch(args[0].toLowerCase()) {
             case "add":
             case "create":
-                if(args.length < 3) {
-                    sender.sendMessage("§cUsage: /generator add <BLOCK|ITEM|ENTITY> <params>");
+                if(args.length < 2) {
+                    sender.sendMessage("§cUsage: /generator add <BLOCK|ITEM|ENTITY>");
                     return true;
                 }
 
@@ -56,7 +56,7 @@ public class GeneratorCommand extends Command {
                     return true;
                 }
 
-                Generator generator = type.newInstance(player.getLocation(), Arrays.copyOfRange(args, 2, args.length));
+                Generator generator = type.newInstance(player, player.getLocation());
                 if(generator == null) {
                     player.sendMessage("§cThe generator data was invalid. Try again.");
                     return true;

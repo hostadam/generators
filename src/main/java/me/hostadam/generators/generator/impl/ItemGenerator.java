@@ -28,6 +28,6 @@ public class ItemGenerator extends Generator<ItemStack> {
 
     @Override
     public void generate() {
-        this.location.getWorld().dropItem(location, this.toGenerate);
+        this.location.getWorld().dropItem(location, this.toGenerate.clone());
     }
 }
