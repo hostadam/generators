@@ -2,9 +2,14 @@ package me.hostadam.generators.generator;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.hostadam.generators.GeneratorsPlugin;
+import me.hostadam.generators.util.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.bukkit.scheduler.BukkitTask;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +26,11 @@ public abstract class Generator<T> implements ConfigurationSerializable {
 
     private boolean paused = false;
     private int generations, maxGenerations;
+
     private long minDelay, maxDelay;
     private long interval, lastGeneration, nextGeneration;
     private long creationDate, duration;
+    private BukkitTask task;
 
     public Generator(GeneratorType type, Location location, T toGenerate) {
         this.type = type;
@@ -50,6 +57,23 @@ public abstract class Generator<T> implements ConfigurationSerializable {
         this.interval = section.getLong("interval");
         this.creationDate = section.getLong("creationDate");
         this.duration = section.getLong("duration");
+    }
+
+    public void startTask() {
+        if(this.task != null) {
+            this.task.cancel();
+        }
+
+        this.task = Bukkit.getScheduler().runTaskTimer(GeneratorsPlugin.getInstance(), () -> {
+            if(this.shouldGenerate()) {
+                this.generate();
+                if(this.tickValues()) {
+                    this.task.cancel();
+                    this.task = null;
+                    GeneratorsPlugin.getInstance().getHandler().remove(this);
+                }
+            }
+        }, 5, 5);
     }
 
     public boolean tickValues() {
@@ -80,7 +104,7 @@ public abstract class Generator<T> implements ConfigurationSerializable {
     }
 
     @Override
-    public Map<String, Object> serialize() {
+    public @NotNull Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
 
         map.put("type", this.type.name());

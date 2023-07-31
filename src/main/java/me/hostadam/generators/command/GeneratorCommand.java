@@ -5,9 +5,11 @@ import me.hostadam.generators.generator.Generator;
 import me.hostadam.generators.generator.GeneratorType;
 import me.hostadam.generators.generator.gui.GeneratorEditGUI;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -58,11 +60,11 @@ public class GeneratorCommand extends Command {
 
                 Generator generator = type.newInstance(player, player.getLocation());
                 if(generator == null) {
-                    player.sendMessage("§cThe generator data was invalid. Try again.");
                     return true;
                 }
 
                 this.plugin.getHandler().addGenerator(generator);
+                new GeneratorEditGUI(player, generator).openForPlayer();
                 player.sendMessage("§aYou have created a generator with ID §l" + generator.getId() + "§a.");
                 return true;
             case "edit":

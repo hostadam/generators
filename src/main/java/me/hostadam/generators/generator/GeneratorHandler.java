@@ -6,7 +6,6 @@ import me.hostadam.generators.GeneratorsPlugin;
 import me.hostadam.generators.generator.impl.BlockGenerator;
 import me.hostadam.generators.generator.impl.EntityGenerator;
 import me.hostadam.generators.generator.impl.ItemGenerator;
-import me.hostadam.generators.generator.task.GeneratorTask;
 import org.bukkit.configuration.ConfigurationSection;
 
 import javax.xml.stream.Location;
@@ -20,7 +19,6 @@ public class GeneratorHandler {
     @Getter
     private List<Generator> generators = new ArrayList<>();
     private int id;
-    private GeneratorTask task;
 
     public GeneratorHandler(GeneratorsPlugin plugin) {
         this.plugin = plugin;
@@ -33,19 +31,26 @@ public class GeneratorHandler {
                 case "BLOCK":
                     BlockGenerator generator = new BlockGenerator(section);
                     this.addGenerator(generator);
+                    break;
                 case "ENTITY":
                     EntityGenerator entityGenerator = new EntityGenerator(section);
                     this.addGenerator(entityGenerator);
+                    break;
                 case "ITEM":
                     ItemGenerator itemGenerator = new ItemGenerator(section);
                     this.addGenerator(itemGenerator);
+                    break;
             }
         }
-
-        this.task = new GeneratorTask(this, 20);
     }
 
-    public void remove(Generator generator) {
+    public void remove(Generator<?> generator) {
+        //Deduct the id if you remove the latest generator.
+        if(generator.getId() == this.id) {
+            this.id--;
+        }
+
+        this.generators.remove(generator);
         if(this.plugin.getConfig().contains("generators." + generator.getId())) {
             this.plugin.getConfig().set("generators." + generator.getId(), null);
         }
@@ -70,6 +75,10 @@ public class GeneratorHandler {
         ++this.id;
         generator.setId(this.id);
         this.generators.add(generator);
+
+        if(generator.getTask() == null) {
+            generator.startTask();
+        }
     }
 
 }

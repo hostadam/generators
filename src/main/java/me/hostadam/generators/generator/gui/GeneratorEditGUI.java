@@ -199,7 +199,6 @@ public class GeneratorEditGUI extends GeneratorGUI {
                 break;
             case 16:
                 this.plugin.getHandler().remove(generator);
-                plugin.getHandler().getGenerators().remove(this.generator);
                 player.sendMessage("§cRemoved a generator.");
                 player.closeInventory();
                 break;

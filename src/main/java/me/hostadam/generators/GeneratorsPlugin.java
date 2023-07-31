@@ -21,6 +21,11 @@ public class GeneratorsPlugin extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        if(!getDataFolder().exists()) {
+            getDataFolder().mkdirs();
+        }
+
+        saveDefaultConfig();
         this.handler = new GeneratorHandler(this);
 
         getServer().getCommandMap().register("generator", new GeneratorCommand(this));

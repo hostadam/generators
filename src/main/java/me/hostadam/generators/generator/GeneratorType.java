@@ -22,13 +22,15 @@ public enum GeneratorType {
             case ITEM:
                 ItemStack itemStack = player.getInventory().getItemInMainHand();
                 if(itemStack.getType() == Material.AIR) {
+                    player.sendMessage("§cYou must be holding an item.");
                     return null;
                 }
 
                 return new ItemGenerator(location, itemStack.clone());
             case ENTITY:
                 itemStack = player.getInventory().getItemInMainHand();
-                if(itemStack.getType() == Material.AIR) {
+                if(!itemStack.getType().name().contains("SPAWN_EGG") && !itemStack.getType().name().contains("_SPAWN_EGG")) {
+                    player.sendMessage("§cThe item must be a spawn egg.");
                     return null;
                 }
 
@@ -36,7 +38,8 @@ public enum GeneratorType {
                 return new EntityGenerator(location, type);
             case BLOCK:
                 itemStack = player.getInventory().getItemInMainHand();
-                if(itemStack.getType() == Material.AIR) {
+                if(itemStack.getType() == Material.AIR || !itemStack.getType().isBlock()) {
+                    player.sendMessage("§cThe item must be a placable block.");
                     return null;
                 }
 

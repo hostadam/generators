@@ -20,6 +20,11 @@ public class ItemBuilder {
         this.meta = itemStack.getItemMeta();
     }
 
+    public ItemBuilder(ItemStack itemStack) {
+        this.itemStack = itemStack;
+        this.meta = itemStack.getItemMeta();
+    }
+
     public ItemBuilder withName(String name) {
         this.meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
         return this;
