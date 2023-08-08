@@ -1,5 +1,5 @@
 name: Generators
-version: 1.1
+version: 1.2
 api-version: 1.17
 author: Hostadam
 main: me.hostadam.generators.GeneratorsPlugin

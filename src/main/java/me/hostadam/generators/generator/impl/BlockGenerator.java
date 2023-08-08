@@ -3,6 +3,7 @@ package me.hostadam.generators.generator.impl;
 import me.hostadam.generators.generator.Generator;
 import me.hostadam.generators.generator.GeneratorType;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -31,8 +32,9 @@ public class BlockGenerator extends Generator<ItemStack> {
     public void generate() {
         this.location.getBlock().setType(this.toGenerate.getType());
 
-        if(this.toGenerate.hasBlockData()) {
-            this.location.getBlock().setBlockData(this.toGenerate.getBlockData(this.toGenerate.getType()));
-        }
+        //Compatibility with older versions
+        try {
+            if(this.toGenerate.hasBlockData()) this.location.getBlock().setBlockData(this.toGenerate.getBlockData(this.toGenerate.getType()));
+        } catch (Exception exception) { }
     }
 }
